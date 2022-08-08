@@ -5,14 +5,38 @@ import { useState } from 'react';
 function App() {
   const [result, setResult] = useState(0);
   const numpad = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-  const topFormula = [{ title: "C" }, { title: "+/-" }, { title: "%" }]
+  const topFormula = [{ title: "C", value: "clear" }, { title: "+/-" }, { title: "%" }]
   const rightFormula = [{ title: "÷" }, { title: "x" }, { title: "-" }, { title: "+" }, { title: "=" }]
+
   const nowTime = () => {
     let d = new Date()
     let now = Date.now()
     let hr = d.getHours()
     let min = d.getMinutes()
     return `${hr}:${min}`
+  }
+
+  const appendResult = (key) => {
+    // console.log(key.target.value);
+    if (result == 0) {
+      setResult(`${key.target.value}`)
+    } else {
+      setResult(`${result}${key.target.value}`)
+    }
+  }
+
+  const handleFormula = (key) => {
+    const formula =  key.target.value
+    console.log(key, formula);
+
+    switch (formula) {
+      case "clear":
+        setResult(0)        
+        break;
+    
+      default:
+        break;
+    }
   }
 
   return (
@@ -28,7 +52,7 @@ function App() {
             <div className="top-formulas">
               {
                 topFormula.map((formula, i) => (
-                  <button key={i} className="formula pad">{formula.title}</button>
+                  <button key={i} className="formula pad" value={formula.value} onClick={handleFormula}>{formula.title}</button>
                 ))
               }
             </div>
@@ -36,7 +60,7 @@ function App() {
             <div className="numpads">
               {
                 numpad.map((num, i) => (
-                  <button key={i} className="num pad">{num}</button>
+                  <button key={i} className="num pad" value={num} onClick={appendResult}>{num}</button>
                 ))
               }
             </div>
