@@ -10,7 +10,7 @@ function App() {
 
   const numpad = [1, 2, 3, 4, 5, 6, 7, 8, 9]
   const topFormula = [{ title: "C", value: "clear" }, { title: "+/-" }, { title: "%" }]
-  const rightFormula = [{ title: "÷", value: "divide"}, { title: "x", value: "multiply" }, { title: "-", value: "substract" }, { title: "+", value: "add" }, { title: "=", value: "equals" }]
+  const rightFormula = [{ title: "÷", value: "divide" }, { title: "x", value: "multiply" }, { title: "-", value: "substract" }, { title: "+", value: "add" }, { title: "=", value: "equals" }]
 
   const nowTime = () => {
     let d = new Date()
@@ -23,7 +23,10 @@ function App() {
   const appendResult = (key) => {
     if (fn) {
       setFromCalc(parseInt(result))
-      setToCalc(`${key.target.value}`)
+      setToCalc(parseInt(`${key.target.value}`))
+      setResult(toCalc)
+
+      return
     }
 
     if (result == 0) {
@@ -50,23 +53,49 @@ function App() {
       case "substract":
         setFn(formula)
         break;
+      case "equals":
+        calculate()
+        break;
       default:
         break;
     }
   }
 
+  const calculate = () => {
+    let calc
+
+    switch (fn) {
+      case "divide":
+        calc = fromCalc / toCalc
+        break;
+      case "multiply":
+        calc = fromCalc * toCalc
+        break;
+      case "add":
+        calc = fromCalc + toCalc
+        break;
+      case "substract":
+        calc = fromCalc - toCalc
+        break;
+        default:
+          break;
+    }
+
+    setResult(calc)
+    setFn(null)
+  }
+
   const handleFormula = (key) => {
     const formula = key.target.value
-    console.log(key, formula);
 
     switch (formula) {
       case "clear":
         setResult(0)
         setToCalc(0)
         setFromCalc(0)
-        setFn(null)     
+        setFn(null)
         break;
-    
+
       default:
         break;
     }
