@@ -4,9 +4,13 @@ import { useState } from 'react';
 
 function App() {
   const [result, setResult] = useState(0);
+  const [fn, setFn] = useState(null);
+  const [fromCalc, setFromCalc] = useState(0);
+  const [toCalc, setToCalc] = useState(null);
+
   const numpad = [1, 2, 3, 4, 5, 6, 7, 8, 9]
   const topFormula = [{ title: "C", value: "clear" }, { title: "+/-" }, { title: "%" }]
-  const rightFormula = [{ title: "÷" }, { title: "x" }, { title: "-" }, { title: "+" }, { title: "=" }]
+  const rightFormula = [{ title: "÷", value: "divide"}, { title: "x", value: "multiply" }, { title: "-", value: "substract" }, { title: "+", value: "add" }, { title: "=", value: "equals" }]
 
   const nowTime = () => {
     let d = new Date()
@@ -17,7 +21,11 @@ function App() {
   }
 
   const appendResult = (key) => {
-    // console.log(key.target.value);
+    if (fn) {
+      setFromCalc(parseInt(result))
+      setToCalc(`${key.target.value}`)
+    }
+
     if (result == 0) {
       setResult(`${key.target.value}`)
     } else {
@@ -25,13 +33,38 @@ function App() {
     }
   }
 
+  const handleFn = (key) => {
+    const formula = key.target.value
+    console.log(formula);
+
+    switch (formula) {
+      case "divide":
+        setFn(formula)
+        break;
+      case "multiply":
+        setFn(formula)
+        break;
+      case "add":
+        setFn(formula)
+        break;
+      case "substract":
+        setFn(formula)
+        break;
+      default:
+        break;
+    }
+  }
+
   const handleFormula = (key) => {
-    const formula =  key.target.value
+    const formula = key.target.value
     console.log(key, formula);
 
     switch (formula) {
       case "clear":
-        setResult(0)        
+        setResult(0)
+        setToCalc(0)
+        setFromCalc(0)
+        setFn(null)     
         break;
     
       default:
@@ -74,7 +107,7 @@ function App() {
           <div className="right-formulas">
             {
               rightFormula.map((formula, i) => (
-                <button key={i} className="formula pad">{formula.title}</button>
+                <button key={i} className="formula pad" value={formula.value} onClick={handleFn}>{formula.title}</button>
               ))
             }
           </div>
