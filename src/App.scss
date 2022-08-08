@@ -1,0 +1,48 @@
+.App {
+  background-color: #f4f4f4;
+  height: 100vh;
+  color: #ffffff;
+}
+
+.allCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calculator {
+  width: 30%;
+  margin: 0 auto;
+  background-color: #000000;
+  height: 100%;
+
+  &-body {
+    .result {
+      font-size: 100px;
+    }
+
+    .numpads {
+      display: grid;
+      grid-template-columns: auto auto auto;
+      gap: 10px;
+      
+      .pad {
+        @extend .allCenter;
+        width: 120px;
+        height: 120px;
+        cursor: pointer;
+        color: #ffffff;
+        font-size: 80px;
+      }
+      .num {
+        background: #333333;
+        border-radius: 100px;
+        border: none;
+
+        &:active {
+          background-color: #737373;
+        }
+      }
+    }
+  }
+}
