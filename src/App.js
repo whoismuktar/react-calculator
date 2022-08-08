@@ -6,25 +6,33 @@ function App() {
   const [result, setResult] = useState(0);
   const [fn, setFn] = useState(null);
   const [fromCalc, setFromCalc] = useState(0);
-  const [toCalc, setToCalc] = useState(null);
+  const [toCalc, setToCalc] = useState(0);
 
   const numpad = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-  const topFormula = [{ title: "C", value: "clear" }, { title: "+/-" }, { title: "%" }]
+  const topFormula = [{ title: "+/-", value: "plusMinus" }, { title: "%", value: "percentage" }]
+
   const rightFormula = [{ title: "÷", value: "divide" }, { title: "x", value: "multiply" }, { title: "-", value: "substract" }, { title: "+", value: "add" }, { title: "=", value: "equals" }]
 
   const nowTime = () => {
     let d = new Date()
-    let now = Date.now()
     let hr = d.getHours()
     let min = d.getMinutes()
     return `${hr}:${min}`
+  }
+
+  const isFnSelected = (f) => {
+    if (f === fn) {
+      return "fn_selected "
+    }
+    return ""
   }
 
   const appendResult = (key) => {
     if (fn) {
       setFromCalc(parseInt(result))
       setToCalc(parseInt(`${key.target.value}`))
-      setResult(toCalc)
+      // setResult(toCalc) // didn't work
+      setResult(key.target.value)
 
       return
     }
@@ -56,6 +64,12 @@ function App() {
       case "equals":
         calculate()
         break;
+      case "clear":
+        setResult(0)
+        setToCalc(0)
+        setFromCalc(0)
+        setFn(null)
+        break;
       default:
         break;
     }
@@ -77,28 +91,12 @@ function App() {
       case "substract":
         calc = fromCalc - toCalc
         break;
-        default:
-          break;
+      default:
+        break;
     }
 
     setResult(calc)
     setFn(null)
-  }
-
-  const handleFormula = (key) => {
-    const formula = key.target.value
-
-    switch (formula) {
-      case "clear":
-        setResult(0)
-        setToCalc(0)
-        setFromCalc(0)
-        setFn(null)
-        break;
-
-      default:
-        break;
-    }
   }
 
   return (
@@ -112,9 +110,10 @@ function App() {
         <div className="calculator-body">
           <div className='left-flags'>
             <div className="top-formulas">
+              <button className="formula pad" value="clear" onClick={handleFn}>C</button>
               {
                 topFormula.map((formula, i) => (
-                  <button key={i} className="formula pad" value={formula.value} onClick={handleFormula}>{formula.title}</button>
+                  <button key={i} className={`${isFnSelected(formula.value)}formula pad`} value={formula.value} onClick={()=> setFn(formula.value)}>{formula.title}</button>
                 ))
               }
             </div>
@@ -136,7 +135,7 @@ function App() {
           <div className="right-formulas">
             {
               rightFormula.map((formula, i) => (
-                <button key={i} className="formula pad" value={formula.value} onClick={handleFn}>{formula.title}</button>
+                <button key={i} className={`${isFnSelected(formula.value)}formula pad`} value={formula.value} onClick={handleFn}>{formula.title}</button>
               ))
             }
           </div>
