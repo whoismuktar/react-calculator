@@ -39,6 +39,12 @@
       font-size: 60px;
       border-radius: 100px;
       border: none;
+
+      &.formula {
+        &.fn_selected {
+          background-color: #f4f4f4;
+        }
+      }
     }
 
     .left-flags {
