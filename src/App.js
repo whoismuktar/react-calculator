@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.scss';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function App() {
   const [result, setResult] = useState(0);
@@ -46,37 +46,35 @@ function App() {
 
   const handleFn = (key) => {
     const formula = key.target.value
-    console.log(formula);
+    // console.log(formula);
 
     switch (formula) {
-      case "divide":
-        setFn(formula)
-        break;
-      case "multiply":
-        setFn(formula)
-        break;
-      case "add":
-        setFn(formula)
-        break;
-      case "substract":
-        setFn(formula)
-        break;
       case "equals":
         calculate()
         break;
+        case "percentage":
+          console.log(formula);
+          setFn(() => formula);
+          console.log(fn);
+          if (result > 0) {
+          calculate()
+        }
+        break;
       case "clear":
+        console.log("clear");
         setResult(0)
         setToCalc(0)
         setFromCalc(0)
         setFn(null)
         break;
       default:
-        break;
+        setFn(formula)
     }
   }
 
   const calculate = () => {
     let calc
+    console.log({fn});
 
     switch (fn) {
       case "divide":
@@ -91,6 +89,10 @@ function App() {
       case "substract":
         calc = fromCalc - toCalc
         break;
+      case "percentage":
+        console.log(123);
+        calc = result/100
+        break;
       default:
         break;
     }
@@ -98,6 +100,14 @@ function App() {
     setResult(calc)
     setFn(null)
   }
+
+  // useEffect(()=> {
+  //   console.log("% %");
+  //   if (fn === "percentage") {
+  //     console.log("%");
+  //     calculate()
+  //   }
+  // }, [fn])
 
   return (
     <div className="App">
@@ -113,7 +123,7 @@ function App() {
               <button className="formula pad" value="clear" onClick={handleFn}>C</button>
               {
                 topFormula.map((formula, i) => (
-                  <button key={i} className={`${isFnSelected(formula.value)}formula pad`} value={formula.value} onClick={()=> setFn(formula.value)}>{formula.title}</button>
+                  <button key={i} className={`${isFnSelected(formula.value)}formula pad`} value={formula.value} onClick={handleFn}>{formula.title}</button>
                 ))
               }
             </div>
