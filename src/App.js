@@ -4,13 +4,12 @@ import { useEffect, useState } from 'react';
 
 function App() {
   const [result, setResult] = useState(0);
-  const [fn, setFn] = useState(null);
+  const [fn, setFn] = useState("");
   const [fromCalc, setFromCalc] = useState(0);
   const [toCalc, setToCalc] = useState(0);
 
   const numpad = [1, 2, 3, 4, 5, 6, 7, 8, 9]
   const topFormula = [{ title: "+/-", value: "plusMinus" }, { title: "%", value: "percentage" }]
-
   const rightFormula = [{ title: "÷", value: "divide" }, { title: "x", value: "multiply" }, { title: "-", value: "substract" }, { title: "+", value: "add" }, { title: "=", value: "equals" }]
 
   const nowTime = () => {
@@ -46,22 +45,24 @@ function App() {
 
   const handleFn = (key) => {
     const formula = key.target.value
-    // console.log(formula);
+    console.log(formula);
 
     switch (formula) {
       case "equals":
         calculate()
         break;
-        case "percentage":
-          console.log(formula);
-          setFn(() => formula);
-          console.log(fn);
-          if (result > 0) {
-          calculate()
-        }
+      case "percentage":
+        console.log(formula);
+        // setFn(() => formula);
+        setFn(formula);
+        console.log(fn);
+        // if (typeof result === "number" && result != 0) {
+        // if (result > 0) {
+        //   calculate()
+        // }
         break;
       case "clear":
-        console.log("clear");
+        // console.log("clear");
         setResult(0)
         setToCalc(0)
         setFromCalc(0)
@@ -74,7 +75,7 @@ function App() {
 
   const calculate = () => {
     let calc
-    console.log({fn});
+    console.log({ fn, result, fromCalc });
 
     switch (fn) {
       case "divide":
@@ -91,7 +92,7 @@ function App() {
         break;
       case "percentage":
         console.log(123);
-        calc = result/100
+        calc = result / 100
         break;
       default:
         break;
@@ -101,13 +102,14 @@ function App() {
     setFn(null)
   }
 
-  // useEffect(()=> {
-  //   console.log("% %");
-  //   if (fn === "percentage") {
-  //     console.log("%");
-  //     calculate()
-  //   }
-  // }, [fn])
+  useEffect(() => {
+    if (fn === "percentage") {
+      console.log({result});
+      if (result > 0) {
+        calculate()
+      }
+    }
+  }, [fn])
 
   return (
     <div className="App">
@@ -116,7 +118,10 @@ function App() {
           {nowTime()}
         </header>
 
-        <div className="result">{result}</div>
+        {
+          <div className="result">{result}</div>
+        }
+
         <div className="calculator-body">
           <div className='left-flags'>
             <div className="top-formulas">
