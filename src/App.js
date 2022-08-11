@@ -105,6 +105,8 @@ function App() {
   }
 
   useEffect(() => {
+    document.title = "Calculator App"
+
     if (fn === "percentage") {
       console.log({result});
       if (result > 0) {
