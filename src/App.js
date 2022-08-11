@@ -27,19 +27,21 @@ function App() {
   }
 
   const appendResult = (key) => {
+    const num = key.target.innerText;
+
     if (fn) {
       setFromCalc(parseInt(result))
-      setToCalc(parseInt(`${key.target.value}`))
+      setToCalc(parseInt(`${num}`))
       // setResult(toCalc) // didn't work
-      setResult(key.target.value)
+      setResult(num)
 
       return
     }
 
     if (result == 0) {
-      setResult(`${key.target.value}`)
+      setResult(`${num}`)
     } else {
-      setResult(`${result}${key.target.value}`)
+      setResult(`${result}${num}`)
     }
   }
 
@@ -142,7 +144,7 @@ function App() {
             </div>
 
             <div className="numpads bottom">
-              <button className="num pad zero">0</button>
+              <button className="num pad zero" onClick={appendResult}>0</button>
               <button className="num pad dot">.</button>
             </div>
           </div>
